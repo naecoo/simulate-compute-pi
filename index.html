@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulate Compute PI</title>
+  <style>
+    canvas {
+      border: 1px solid rebeccapurple;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="number" id="count" placeholder="测试样本数量" value="50000" />
+  <button id="button">开始测试</button>
+  <p id="result"></p>
+  <canvas id="canvas" width="400" height="400"></canvas>
+</body>
+<script async>
+  const canvas = document.querySelector('#canvas');
+  const ctx = canvas.getContext('2d');
+
+  function draw(x, y, color) {
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.arc(x, y, 1, 0, 2 * Math.PI)
+    ctx.fill();
+  }
+
+  function simulate() {
+    const count = document.querySelector('#count').value;
+    const n = parseInt(count);
+    ctx.clearRect(0, 0, 400, 400);
+
+    let match_num = 0;
+    for (let i = 0; i < n; i++) {
+      const x = Math.random() * 400;
+      const y = Math.random() * 400;
+      if (isInCycle(x, y)) {
+        match_num++;
+        draw(x, y, 'red');
+      } else {
+        draw(x, y, 'blue');
+      }
+    }
+    document.querySelector('#result').innerHTML = `模拟结果：${match_num / n * 4}`
+  }
+
+  function isInCycle(x, y) {
+    return Math.pow(x, 2) + Math.pow(y - 400, 2) <= Math.pow(400, 2);
+  }
+
+  document.querySelector('#button').addEventListener('click', simulate);
+  simulate();
+</script>
+
+</html>
